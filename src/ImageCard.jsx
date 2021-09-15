@@ -121,17 +121,6 @@ function ImageCard({ imageSrc, title, description }) {
           send({ type: 'REPORT_IMAGE_FAILED_TO_LOAD' });
         }}
       />
-      {/* <video
-        tabIndex="-1"
-        disablePictureInPicture
-        loop
-        muted
-        crossOrigin="anonymous"
-        className="cover-full"
-      >
-        <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4" />
-        <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm" />
-      </video> */}
       {state.matches('showingVideo') && (
         <video
           preload="none"
