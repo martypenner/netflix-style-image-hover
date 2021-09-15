@@ -2,122 +2,28 @@ import React from 'react';
 import { useMachine } from '@xstate/react';
 import { assign, createMachine } from 'xstate';
 
-const netflixStyleVideoHoverMachine = createMachine(
-  {
-    id: 'netflixStyleVideoHover',
+const netflixStyleVideoHoverMachine = createMachine({
+  context: {},
 
-    context: {
-      hasVideoLoaded: false,
-    },
-
-    initial: 'awaitingBackgroundImageLoad',
-    states: {
-      awaitingBackgroundImageLoad: {
-        on: {
-          REPORT_IMAGE_LOADED: 'idle',
-          REPORT_IMAGE_FAILED_TO_LOAD: 'imageFailedToLoad',
-        },
-      },
-      imageFailedToLoad: {},
-      idle: {
-        on: {
-          MOUSE_OVER: 'showingVideo',
-        },
-      },
-      showingVideo: {
-        initial: 'checkingIfVideoHasLoaded',
-        on: {
-          MOUSE_OUT: 'idle',
-        },
-        states: {
-          checkingIfVideoHasLoaded: {
-            always: [
-              {
-                cond: 'hasLoadedVideo',
-                target: 'waitingBeforePlaying',
-              },
-              {
-                target: 'loadingVideoSrc',
-              },
-            ],
-          },
-          waitingBeforePlaying: {
-            after: {
-              2000: 'autoPlayingVideo',
-            },
-          },
-          loadingVideoSrc: {
-            initial: 'cannotMoveOn',
-            states: {
-              cannotMoveOn: {
-                after: {
-                  2000: 'canMoveOn',
-                },
-                on: {
-                  REPORT_VIDEO_LOADED: {
-                    actions: 'reportVideoLoaded',
-                  },
-                },
-              },
-              canMoveOn: {
-                always: {
-                  cond: 'hasLoadedVideo',
-                  target: '#autoPlayingVideo',
-                },
-                on: {
-                  REPORT_VIDEO_LOADED: {
-                    actions: 'reportVideoLoaded',
-                    target: '#autoPlayingVideo',
-                  },
-                },
-              },
-            },
-          },
-          autoPlayingVideo: {
-            id: 'autoPlayingVideo',
-            entry: 'playVideo',
-          },
-        },
-      },
-    },
-  },
-  {
-    guards: {
-      hasLoadedVideo: (context) => {
-        return context.hasVideoLoaded;
-      },
-    },
-
-    actions: {
-      reportVideoLoaded: assign({
-        hasVideoLoaded: true,
-      }),
-    },
-  }
-);
+  initial: '',
+  states: {},
+});
 
 function ImageCard({ imageSrc, title, description }) {
   const videoRef = React.useRef();
 
-  const [state, send] = useMachine(
-    netflixStyleVideoHoverMachine.withConfig({
-      actions: {
-        playVideo: () => videoRef.current.play(),
-      },
-    }),
-    {
-      devTools: true,
-    }
-  );
+  const [state, send] = useMachine(netflixStyleVideoHoverMachine, {
+    devTools: true,
+  });
 
   return (
     <a
       href={`#${imageSrc}`}
       onMouseEnter={() => {
-        send({ type: 'MOUSE_OVER' });
+        console.log('mouse over');
       }}
       onMouseOut={() => {
-        send({ type: 'MOUSE_OUT' });
+        console.log('mouse out');
       }}
     >
       <img
@@ -125,28 +31,26 @@ function ImageCard({ imageSrc, title, description }) {
         alt=""
         className="cover"
         onLoad={() => {
-          send({ type: 'REPORT_IMAGE_LOADED' });
+          console.log('image loaded');
         }}
         onError={() => {
-          send({ type: 'REPORT_IMAGE_FAILED_TO_LOAD' });
+          console.log('image failed to load');
         }}
       />
-      {state.matches('showingVideo') && (
-        <video
-          tabIndex="-1"
-          disablePictureInPicture
-          loop
-          muted
-          className="cover-full"
-          ref={videoRef}
-          onCanPlay={() => {
-            send({ type: 'REPORT_VIDEO_LOADED' });
-          }}
-        >
-          <source src={`/assets/Flowers.mp4?key=${imageSrc}`} type="video/mp4" />
-        </video>
+      <video
+        tabIndex="-1"
+        disablePictureInPicture
+        loop
+        muted
+        className="cover-full"
+        ref={videoRef}
+        onCanPlay={() => {
+          console.log('can play');
+        }}
+      >
+        <source src={`/assets/Flowers.mp4?key=${imageSrc}`} type="video/mp4" />
+      </video>
       )}
-
       <div className="text">
         <p>{title}</p>
         <small>{description}</small>
