@@ -102,7 +102,7 @@ function ImageCard({ imageSrc, title, description }) {
 
   return (
     <a
-      href="#"
+      href={`#${imageSrc}`}
       onMouseEnter={() => {
         send({ type: 'MOUSE_OVER' });
       }}
