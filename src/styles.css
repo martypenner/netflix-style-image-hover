@@ -1,0 +1,87 @@
+body,
+html {
+  height: 100%;
+  width: 100%;
+  background: #222;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Lato, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  font-size: 14px;
+}
+
+a {
+  text-decoration: none;
+  color: #ccc;
+}
+
+.container {
+  display: flex;
+  gap: 1rem;
+  margin: 3rem;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  position: relative;
+  display: block;
+  flex: 1 1 0px;
+  min-width: 150px;
+  transition: transform 500ms;
+}
+
+.text {
+  display: none;
+}
+
+.container:focus-within .item,
+.container:hover .item {
+  transform: translateX(-25%);
+}
+
+.item:focus ~ .item,
+.item:hover ~ .item {
+  transform: translateX(25%);
+}
+
+.container .item:focus,
+.container .item:hover {
+  transform: scale(1.5);
+  z-index: 1;
+}
+
+.container .item:focus .cover,
+.container .item:hover .cover {
+  opacity: 0;
+}
+
+.container .item:focus .cover-full,
+.container .item:hover .cover-full {
+  opacity: 1;
+}
+
+.container .item:focus .text,
+.container .item:hover .text {
+  display: block;
+}
+
+.item .cover {
+  position: absolute;
+  top: 0;
+  display: block;
+  max-width: 100%;
+  border-radius: 10px;
+  transition: opacity 500ms;
+}
+
+.item .cover-full {
+  /* position: absolute;
+  top: 0; */
+  opacity: 0;
+  max-width: 100%;
+  border-radius: 10px;
+  transition: opacity 500ms;
+}
