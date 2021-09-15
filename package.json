@@ -1,8 +1,9 @@
 {
-  "name": "vanilla",
+  "name": "netflix-style-image-hover",
   "version": "1.0.0",
   "description": "JavaScript example starter project",
-  "main": "index.html",
+  "private": true,
+  "main": "dist/index.js",
   "scripts": {
     "start": "parcel index.html --open",
     "build": "parcel build index.html"
@@ -13,7 +14,9 @@
   },
   "devDependencies": {
     "@babel/core": "7.2.0",
-    "parcel": "^2.0.0-rc.0"
+    "@parcel/transformer-image": "^2.0.0-rc.0",
+    "parcel": "^2.0.0-rc.0",
+    "ws": "^8.2.2"
   },
   "resolutions": {
     "@babel/preset-env": "7.13.8"
