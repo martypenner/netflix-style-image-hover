@@ -75,6 +75,7 @@ const netflixStyleVideoHoverMachine = createMachine(
           },
           autoPlayingVideo: {
             id: 'autoPlayingVideo',
+            entry: 'playVideo',
           },
         },
       },
@@ -96,9 +97,18 @@ const netflixStyleVideoHoverMachine = createMachine(
 );
 
 function ImageCard({ imageSrc, title, description }) {
-  const [state, send] = useMachine(netflixStyleVideoHoverMachine, {
-    devTools: true,
-  });
+  const videoRef = React.useRef();
+
+  const [state, send] = useMachine(
+    netflixStyleVideoHoverMachine.withConfig({
+      actions: {
+        playVideo: () => videoRef.current.play(),
+      },
+    }),
+    {
+      devTools: true,
+    }
+  );
 
   return (
     <a
@@ -123,19 +133,17 @@ function ImageCard({ imageSrc, title, description }) {
       />
       {state.matches('showingVideo') && (
         <video
-          preload="none"
           tabIndex="-1"
           disablePictureInPicture
           loop
           muted
-          autoPlay
-          src={`/assets/Flowers.mp4?key=${imageSrc}`}
           className="cover-full"
-          onCanPlayThrough={() => {
+          ref={videoRef}
+          onCanPlay={() => {
             send({ type: 'REPORT_VIDEO_LOADED' });
           }}
         >
-          {/* <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4" /> */}
+          <source src={`/assets/Flowers.mp4?key=${imageSrc}`} type="video/mp4" />
         </video>
       )}
 
