@@ -1,22 +1,3 @@
-body,
-html {
-  height: 100%;
-  width: 100%;
-  background: #222;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: Lato, "Segoe UI", Roboto, sans-serif;
-}
-
-body {
-  font-size: 14px;
-}
-
-a {
-  text-decoration: none;
-  color: #ccc;
-}
-
 .container {
   display: flex;
   gap: 1rem;
@@ -27,10 +8,14 @@ a {
 
 .item {
   position: relative;
-  display: block;
+  display: flex;
   flex: 1 1 0px;
   min-width: 150px;
+  max-width: 200px;
   transition: transform 500ms;
+  background-color: #000;
+  border-radius: 10px;
+  padding: 1rem;
 }
 
 .text {
@@ -60,6 +45,7 @@ a {
 
 .container .item:focus .cover-full,
 .container .item:hover .cover-full {
+  display: block;
   opacity: 1;
 }
 
@@ -78,8 +64,7 @@ a {
 }
 
 .item .cover-full {
-  /* position: absolute;
-  top: 0; */
+  display: none;
   opacity: 0;
   max-width: 100%;
   border-radius: 10px;
